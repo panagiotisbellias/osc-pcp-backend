@@ -47,6 +47,16 @@ mv personal-code-portfolio/* ../
 mv personal-code-portfolio/.* ../
 ```
 
+## Database Connection
+
+Install and configure a postgres instance that listens to 5432 and has as database credentials these:
+```application.properties
+quarkus.datasource.username=postgres
+quarkus.datasource.password=postgres
+```
+
+If you want to change them, configure properly the postgres instance and inform [application.properties](src/main/resources/application.properties)
+
 ## Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
