@@ -1,13 +1,23 @@
-package gr.pcp;
+package gr.pcp.model;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.Entity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.*;
 
 @Entity
-public class Person extends PanacheEntity {
+@Table(name = "person")
+public class Person extends PanacheEntityBase {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "first_name")
     private String firstName;
+
+    @Column(name = "last_name")
     private String lastName;
+
+    @Column(name = "salutation")
     private String salutation;
 
     public Person(String firstName, String lastName, String salutation) {
@@ -17,6 +27,9 @@ public class Person extends PanacheEntity {
     }
 
     public Person() {
+        this.firstName = "";
+        this.lastName = "";
+        this.salutation = "";
     }
 
     public String getFirstName() {

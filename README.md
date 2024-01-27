@@ -49,10 +49,78 @@ mv personal-code-portfolio/.* ../
 
 ## Database Connection
 
-Install and configure a postgres instance that listens to 5432 and has as database credentials these:
-```application.properties
-quarkus.datasource.username=postgres
-quarkus.datasource.password=postgres
+### Set up database server
+
+Many options available to set up a database server. As example, instructions are provided
+here for [postgres](https://www.postgresql.org/).
+
+* Using standalone installation (Linux/Debian environment)
+```bash
+sudo apt-get update
+sudo apt-get install postgresql
+sudo systemctl start postgresql
+```
+
+More info: https://www.geekbits.io/postgresql-default-username-and-password/   
+If you want to change the default credentials you can use [psql utility](https://www.postgresguide.com/utilities/psql/)
+or [pgAdmin](https://www.pgadmin.org/)
+
+* Using [docker](https://www.docker.com/) engine and `docker run` command
+```bash
+docker run \
+--name postgres \
+-v postgresql:/var/lib/postgresql \
+-v postgresql_data:/var/lib/postgresql/data \
+-e POSTGRES_DATABASE=<DATABASE> \
+-e POSTGRES_USER=<USER> \
+-e POSTGRES_PASSWORD=<PASSWORD> \
+-p <PORT>:5432 \
+postgres
+```
+
+* Using docker engine with docker-compose.yml file
+
+    * Create a docker-compose.yml with this content:
+```text
+version: '3.9'
+services:
+    postgres:
+        image: postgres
+        container_name: postgres
+        volumes:
+          - postgresql:/var/lib/postgresql
+          - postgresql_data:/var/lib/postgresql/data
+        environment:
+          - POSTGRES_DB=<DATABASE>
+          - POSTGRES_USER=<USER>
+          - POSTGRES_PASSWORD=<PASSWORD>
+        ports:
+          - <PORT>:5432
+
+volumes:
+  postgresql:
+  postgresql_data:
+```
+
+and run `docker compose up -d`
+
+Also, make sure you have executed this to initiate database with a new user. Provide the <PASSWORD> when it will be asked.
+```bash
+psql -h localhost -p <PORT> -U <USER> -d <DATABASE> -f init.sql
+```
+
+### Configure application.properties
+
+Make sure to adjust properly the following properties:
+
+```properties
+quarkus.datasource.username=<USER>
+quarkus.datasource.password=<PASSWORD>
+quarkus.datasource.jdbc.url=jdbc:postgresql://localhost:<PORT>/<DATABASE>
+quarkus.hibernate-orm.database.default-schema=<SCHEMA>
+
+quarkus.flyway.schemas=<SCHEMA>
+quarkus.flyway.migrate-at-start=true
 ```
 
 If you want to change them, configure properly the postgres instance and inform [application.properties](src/main/resources/application.properties)

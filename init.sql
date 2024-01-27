@@ -1,0 +1,2 @@
+CREATE USER people WITH PASSWORD 'people';
+GRANT CREATE ON DATABASE postgres TO people;
