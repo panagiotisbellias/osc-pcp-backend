@@ -20,16 +20,26 @@ public class Person extends PanacheEntityBase {
     @Column(name = "salutation")
     private String salutation;
 
-    public Person(String firstName, String lastName, String salutation) {
+    public Person(int id, String firstName, String lastName, String salutation) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.salutation = salutation;
     }
 
     public Person() {
+        this.id = 0;
         this.firstName = "";
         this.lastName = "";
         this.salutation = "";
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -59,7 +69,8 @@ public class Person extends PanacheEntityBase {
     @Override
     public String toString() {
         return "Person{" +
-                "firstName='" + firstName + '\'' +
+                "id='" + id + '\'' +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", salutation='" + salutation + '\'' +
                 '}';
