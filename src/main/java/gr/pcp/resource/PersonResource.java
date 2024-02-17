@@ -1,28 +1,34 @@
 package gr.pcp.resource;
 
+import gr.pcp.manager.PersonManager;
 import gr.pcp.model.Person;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
-import java.util.List;
 
 @Path("/api/people")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class PersonResource {
 
+    PersonManager personManager;
+
+    @Inject
+    public PersonResource(PersonManager personManager) {
+        this.personManager = personManager;
+    }
+
     @GET
     public Response getAllPeople() {
-        List<Person> people = Person.listAll();
-        return Response.ok(people).build();
+        return Response.ok(personManager.getAllPeople()).build();
     }
 
     @GET
     @Path("/{id}")
     public Response getPersonById(@PathParam("id") Integer id) {
-        Person person = Person.findById(id);
+        Person person = personManager.getPersonById(id);
         if (person == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -32,7 +38,7 @@ public class PersonResource {
     @POST
     @Transactional
     public Response createPerson(Person person) {
-        person.persist();
+        personManager.createPerson(person);
         return Response.status(Response.Status.CREATED).entity(person).build();
     }
 
@@ -40,26 +46,23 @@ public class PersonResource {
     @Path("/{id}")
     @Transactional
     public Response updatePerson(@PathParam("id") Integer id, Person person) {
-        Person existingPerson = Person.findById(id);
-        if (existingPerson == null) {
+        Person updatedPerson = personManager.updatePerson(id, person);
+        if (updatedPerson == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        existingPerson.setFirstName(person.getFirstName());
-        existingPerson.setLastName(person.getLastName());
-        existingPerson.setSalutation(person.getSalutation());
-        return Response.ok(existingPerson).build();
+        return Response.ok(updatedPerson).build();
     }
 
     @DELETE
     @Path("/{id}")
     @Transactional
     public Response deletePerson(@PathParam("id") Integer id) {
-        Person existingPerson = Person.findById(id);
-        if (existingPerson == null) {
+        try {
+            personManager.deletePerson(id);
+            return Response.noContent().build();
+        } catch (NotFoundException e) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        existingPerson.delete();
-        return Response.noContent().build();
     }
 
 }
