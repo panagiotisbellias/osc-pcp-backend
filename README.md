@@ -125,6 +125,62 @@ quarkus.flyway.migrate-at-start=true
 
 If you want to change them, configure properly the postgres instance and inform [application.properties](src/main/resources/application.properties)
 
+## Caching support
+
+### Set up redis server
+
+[redis](https://redis.io/).
+
+* Using standalone installation (Linux/Debian environment)
+```bash
+curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+
+sudo apt-get update
+sudo apt-get install redis
+```
+
+* Using [docker](https://www.docker.com/) engine and `docker run` command
+```bash
+docker run \
+--name redis \
+-v redis-data:/data \
+-p 6379:6379 \
+redis
+```
+
+* Using docker engine with docker-compose.yml file
+
+  * Create a docker-compose.yml with this content:
+```text
+version: '3.9'
+services:
+    redis:
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:
+```
+
+and run `docker compose up -d`
+
+### Configure application.properties
+
+Make sure to adjust properly the following properties:
+
+```properties
+quarkus.redis.hosts=redis://localhost:6379
+quarkus.cache.redis.value-type=jakarta.ws.rs.core.Response
+quarkus.cache.redis.expire-after-write=10m
+```
+
+If you want you can configure otherwise the redis instance and inform [application.properties](src/main/resources/application.properties)
+
 ## Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
