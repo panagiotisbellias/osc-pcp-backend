@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "person")
-public class Person extends PanacheEntityBase {
+public class PersonModel extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,14 +20,14 @@ public class Person extends PanacheEntityBase {
     @Column(name = "salutation")
     private String salutation;
 
-    public Person(int id, String firstName, String lastName, String salutation) {
+    public PersonModel(int id, String firstName, String lastName, String salutation) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.salutation = salutation;
     }
 
-    public Person() {
+    public PersonModel() {
         this.id = 0;
         this.firstName = "";
         this.lastName = "";

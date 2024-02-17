@@ -2,7 +2,7 @@ package gr.pcp.resource;
 
 import gr.pcp.caching.DefaultCacheKeyGenerator;
 import gr.pcp.manager.PersonManager;
-import gr.pcp.model.Person;
+import gr.pcp.model.PersonModel;
 import io.quarkus.cache.CacheInvalidate;
 import io.quarkus.cache.CacheKey;
 import io.quarkus.cache.CacheResult;
@@ -34,7 +34,7 @@ public class PersonResource {
 
     @GET
     @CacheResult(cacheName = CACHE_PEOPLE, keyGenerator = DefaultCacheKeyGenerator.class)
-    public List<Person> getAllPeople() {
+    public List<PersonModel> getAllPeople() {
         log.info("#getAllPeople");
         return personManager.getAllPeople();
     }
@@ -42,9 +42,9 @@ public class PersonResource {
     @GET
     @Path("/{id}")
     @CacheResult(cacheName = CACHE_PEOPLE)
-    public List<Person> getPersonById(@PathParam("id") @CacheKey Integer id) {
+    public List<PersonModel> getPersonById(@PathParam("id") @CacheKey Integer id) {
         log.info(String.format("#getPersonById(%d)", id));
-        Person person = personManager.getPersonById(id);
+        PersonModel person = personManager.getPersonById(id);
         if (person == null) {
             log.info(String.format("#getPersonById(%d) -> person = %s", id, null));
             return Collections.emptyList();
@@ -56,7 +56,7 @@ public class PersonResource {
     @POST
     @Transactional
     @CacheInvalidate(cacheName = CACHE_PEOPLE, keyGenerator = DefaultCacheKeyGenerator.class)
-    public Response createPerson(Person person) {
+    public Response createPerson(PersonModel person) {
         log.info(String.format("#createPerson(%s)", person));
         personManager.createPerson(person);
         log.info(String.format("#createPerson(%s) -> person is created successfully", person));
@@ -66,9 +66,9 @@ public class PersonResource {
     @PUT
     @Path("/{id}")
     @Transactional
-    public Response updatePerson(@PathParam("id") Integer id, Person person) {
+    public Response updatePerson(@PathParam("id") Integer id, PersonModel person) {
         log.info(String.format("#updatePerson(%d, %s)", id, person));
-        Person updatedPerson = personManager.updatePerson(id, person);
+        PersonModel updatedPerson = personManager.updatePerson(id, person);
         if (updatedPerson == null) {
             log.info(String.format("#updatePerson(%d, %s) -> person = %s", id, person, null));
             return Response.status(Response.Status.NOT_FOUND).build();

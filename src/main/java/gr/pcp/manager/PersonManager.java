@@ -1,6 +1,6 @@
 package gr.pcp.manager;
 
-import gr.pcp.model.Person;
+import gr.pcp.model.PersonModel;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.NotFoundException;
 
@@ -9,20 +9,20 @@ import java.util.List;
 @ApplicationScoped
 public class PersonManager {
 
-    public List<Person> getAllPeople() {
-        return Person.listAll();
+    public List<PersonModel> getAllPeople() {
+        return PersonModel.listAll();
     }
 
-    public Person getPersonById(Integer id) {
-        return Person.findById(id);
+    public PersonModel getPersonById(Integer id) {
+        return PersonModel.findById(id);
     }
 
-    public void createPerson(Person person) {
+    public void createPerson(PersonModel person) {
         person.persist();
     }
 
-    public Person updatePerson(Integer id, Person person) {
-        Person existingPerson = getPersonById(id);
+    public PersonModel updatePerson(Integer id, PersonModel person) {
+        PersonModel existingPerson = getPersonById(id);
         if (existingPerson == null) {
             return null;
         }
@@ -33,7 +33,7 @@ public class PersonManager {
     }
 
     public void deletePerson(Integer id) {
-        Person existingPerson = getPersonById(id);
+        PersonModel existingPerson = getPersonById(id);
         if (existingPerson == null) {
             throw new NotFoundException("Person with id " + id + " doesn't exist");
         }
