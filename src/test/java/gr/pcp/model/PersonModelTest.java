@@ -1,62 +1,45 @@
 package gr.pcp.model;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 
-@ExtendWith(MockitoExtension.class)
-@MockitoSettings(strictness = Strictness.LENIENT)
 class PersonModelTest {
 
-    @InjectMocks
-    PersonModel personModel;
-
     @Test
-    void testGetId() {
+    void testCreation() {
+        PersonModel person1 = new PersonModel(1, "test", "test", "test");
+        PersonModel person2 = new PersonModel();
 
+        Assertions.assertNotNull(person1);
+        Assertions.assertInstanceOf(PersonModel.class, person1);
+        Assertions.assertNotNull(person2);
+        Assertions.assertInstanceOf(PersonModel.class, person2);
     }
 
     @Test
-    void testSetId() {
+    void testGettersSetters() {
+        PersonModel person = new PersonModel();
+        person.setId(1);
+        person.setFirstName("firstName");
+        person.setLastName("lastName");
+        person.setSalutation("salutation");
 
-    }
-
-    @Test
-    void testGetFirstName() {
-
-    }
-
-    @Test
-    void testSetFirstName() {
-
-    }
-
-    @Test
-    void testGetLastName() {
-
-    }
-
-    @Test
-    void testSetLastName() {
-
-    }
-
-    @Test
-    void testGetSalutation() {
-
-    }
-
-    @Test
-    void testSetSaluatation() {
-
+        Assertions.assertEquals(1, person.getId());
+        Assertions.assertEquals("firstName", person.getFirstName());
+        Assertions.assertEquals("lastName", person.getLastName());
+        Assertions.assertEquals("salutation", person.getSalutation());
     }
 
     @Test
     void testToString() {
-
+        PersonModel person = new PersonModel(1, "test", "test", "test");
+        Assertions.assertEquals("Person{" +
+                "id='1'" +
+                ", firstName='test'" +
+                ", lastName='test'" +
+                ", salutation='test'" +
+                "}",
+                person.toString());
     }
 
 }
