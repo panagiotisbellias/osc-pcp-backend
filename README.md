@@ -13,6 +13,8 @@ git config --local user.email "belliaspan@gmail.com"
 git commit -m "Initial commit"
 git checkout -b development
 git checkout development && git merge <TASK-BRANCH>
+git remote add origin https://github.com/<GIT-USERNAME>/pcp-backend.git
+git push --set-upstream origin <BRANCH-TO-PUSH>
 ```
 
 ## Quarkus dependencies installation
