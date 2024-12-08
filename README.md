@@ -19,9 +19,11 @@ git push --set-upstream origin <BRANCH-TO-PUSH>
 
 ## Quarkus dependencies installation
 
-### Environment: Ubuntu 22.04
+### Environments
 
-#### Java 17
+#### 1. Ubuntu 22.04
+
+##### Java 17
 
 ```bash
 sudo apt update
@@ -32,7 +34,7 @@ sudo apt install openjdk-17-jdk
 java --version
 ```
 
-#### Maven 3.9.6
+##### Maven 3.9.6
 
 ```bash
 sudo apt update
@@ -40,6 +42,31 @@ sudo apt upgrade
 sudo apt install maven
 mvn -version
 ```
+
+#### 2. Windows 10
+
+##### Java 17
+
+* Download [.msi](https://adoptium.net/temurin/releases/?os=windows&arch=x64&package=jdk&version=17) file and execute it
+* Note the installation path (e.g., C:\Program Files\Eclipse Adoptium\jdk-17.0.13.11-hotspot).
+* Open System Properties > Advanced > Environment Variables.  
+* Add JAVA_HOME with the path to the JDK installation (e.g., C:\Program Files\Eclipse Adoptium\jdk-17.0.13.11-hotspot).
+* Add %JAVA_HOME%\bin to the Path environment variable.
+* Open a new Command Prompt or PowerShell window and run: `java -version`
+
+##### Maven 3.9.6
+
+* Visit [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi)
+* Download the latest LTS binary .zip file (e.g., apache-maven-x.x.x-bin.zip).
+* Extract the .zip file to a directory, such as C:\Program Files\Apache\Maven.
+* Press Win + R, type sysdm.cpl, and press Enter.
+* Go to the Advanced tab and click Environment Variables.
+* Add a new system variable:
+  * Variable name: MAVEN_HOME 
+  * Variable value: C:\Program Files\Apache\Maven (or the directory where you extracted Maven).
+* Find the Path variable in the system variables and click Edit.
+* Add %MAVEN_HOME%\bin.
+* Open a new Command Prompt or PowerShell window and type: `mvn -v`
 
 ## Quarkus initialization
 
