@@ -133,8 +133,11 @@ volumes:
 
 and run `docker compose up -d`
 
+[//]: # (TODO Mount init.sql in docker compose file)
+
 Also, make sure you have executed this to initiate database with a new user. Provide the <PASSWORD> when it will be asked.
 ```bash
+docker exec -it postgres bash # if runs as a docker container
 psql -h localhost -p <PORT> -U <USER> -d <DATABASE> -f init.sql
 ```
 
@@ -187,6 +190,7 @@ version: '3.9'
 services:
     redis:
     image: redis
+    container_name: redis
     ports:
       - 6379:6379
     volumes:
@@ -204,7 +208,7 @@ Make sure to adjust properly the following properties:
 
 ```properties
 quarkus.redis.hosts=redis://localhost:6379
-quarkus.cache.redis.value-type=jakarta.ws.rs.core.Response
+quarkus.cache.redis.value-type=java.util.List
 quarkus.cache.redis.expire-after-write=10m
 ```
 
