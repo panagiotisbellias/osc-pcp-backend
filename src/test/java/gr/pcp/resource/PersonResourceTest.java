@@ -2,6 +2,7 @@ package gr.pcp.resource;
 
 import gr.pcp.manager.PersonManager;
 import gr.pcp.model.PersonModel;
+import gr.pcp.model.dto.PeopleResponseDTO;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,8 +30,9 @@ class PersonResourceTest {
     @Test
     void testGetAllPeople() {
         Mockito.when(personManager.getAllPeople()).thenReturn(List.of());
-        List<PersonModel> people = personResource.getAllPeople();
-        Assertions.assertEquals(List.of(), people);
+        PeopleResponseDTO people = personResource.getAllPeople();
+        Assertions.assertEquals(List.of(), people.getData());
+        Assertions.assertEquals(0, people.getTotal());
     }
 
     @Test
