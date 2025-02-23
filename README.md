@@ -138,7 +138,7 @@ and run `docker compose up -d`
 Also, make sure you have executed this to initiate database with a new user. Provide the <PASSWORD> when it will be asked.
 ```bash
 docker exec -it postgres bash # if runs as a docker container
-psql -h localhost -p <PORT> -U <USER> -d <DATABASE> -f init.sql
+psql -h localhost -p <PORT> -U <USER> -d <DATABASE> -f init-schemas.sql
 ```
 
 ### Configure application.properties

@@ -3,6 +3,7 @@ package gr.pcp.resource;
 import gr.pcp.caching.DefaultCacheKeyGenerator;
 import gr.pcp.manager.PersonManager;
 import gr.pcp.model.PersonModel;
+import gr.pcp.model.dto.PeopleResponseDTO;
 import io.quarkus.cache.CacheInvalidate;
 import io.quarkus.cache.CacheKey;
 import io.quarkus.cache.CacheResult;
@@ -33,15 +34,16 @@ public class PersonResource {
     }
 
     @GET
-    @CacheResult(cacheName = CACHE_PEOPLE, keyGenerator = DefaultCacheKeyGenerator.class)
-    public List<PersonModel> getAllPeople() {
+//    @CacheResult(cacheName = CACHE_PEOPLE, keyGenerator = DefaultCacheKeyGenerator.class)
+    public PeopleResponseDTO getAllPeople() {
         log.info("#getAllPeople");
-        return personManager.getAllPeople();
+        List<PersonModel> people = personManager.getAllPeople();
+        return new PeopleResponseDTO(people);
     }
 
     @GET
     @Path("/{id}")
-    @CacheResult(cacheName = CACHE_PEOPLE)
+//    @CacheResult(cacheName = CACHE_PEOPLE)
     public List<PersonModel> getPersonById(@PathParam("id") @CacheKey Integer id) {
         log.info(String.format("#getPersonById(%d)", id));
         PersonModel person = personManager.getPersonById(id);
